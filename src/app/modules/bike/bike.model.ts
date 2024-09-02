@@ -33,6 +33,10 @@ const bikeSchema = new mongoose.Schema<IBike>({
   brand: {
     type: String,
     required: true
+  },
+  photo:{
+     type:String,
+     required:true 
   }
 });
 

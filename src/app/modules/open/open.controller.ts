@@ -11,4 +11,4 @@ const open = async (req : Request, res :Response, next: NextFunction) =>{
 
 export const openController = {
     open
-}
+} 

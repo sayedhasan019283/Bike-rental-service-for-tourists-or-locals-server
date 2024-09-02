@@ -4,6 +4,7 @@ import { bikeService } from "./bike.service";
 const createBike = async (req: Request, res: Response, next: NextFunction) => {
     try {
         const data = req.body;
+        console.log(data)
     if (!data) {
         throw new Error('data is not defined');
       }
@@ -58,6 +59,26 @@ const createBike = async (req: Request, res: Response, next: NextFunction) => {
         next(error)
     }
  }
+ const retrieveSingleBike = async (req: Request, res: Response, next: NextFunction) => {
+    try {
+        const {id} = req.params
+        console.log(id)
+        const result = await bikeService.retrieveSingleBikeFromDB( id);
+        console.log(result)
+
+        if (!result) {
+            throw new Error("bike update failed");
+        }
+        res.status(200).json({
+            success: true,
+            statusCode: 200,
+            message: "Bike updated successfully",
+            data: result,
+          });
+    } catch (error) {
+        next(error)
+    }
+ }
 
  const deleteBike = async (req: Request, res: Response, next: NextFunction) => {
     try {
@@ -81,5 +102,6 @@ export const bikeController = {
     createBike,
     retrieveAllBikes,
     updateBike, 
-    deleteBike
+    deleteBike,
+    retrieveSingleBike
 }

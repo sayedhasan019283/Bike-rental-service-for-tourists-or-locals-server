@@ -19,13 +19,19 @@ router.post(
  )
  router.put(
   '/bikes/:id',
-  auth(USER_ROLE.admin),
+  // auth(USER_ROLE.admin),
   validateRequest(bikeValidation.updateBikeSchema),
   bikeController.updateBike
  )
+ router.get(
+  '/bike/:id',
+  // auth(USER_ROLE.admin),
+  validateRequest(bikeValidation.updateBikeSchema),
+  bikeController.retrieveSingleBike
+ )
  router.delete(
   '/bikes/:id',
-  auth(USER_ROLE.admin),
+  // auth(USER_ROLE.admin),
   bikeController.deleteBike,
  )
 

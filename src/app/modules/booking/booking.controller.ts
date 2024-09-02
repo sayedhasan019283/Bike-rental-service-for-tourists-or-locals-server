@@ -61,8 +61,31 @@ const GetAllRentals = async (req: Request, res: Response, next : NextFunction) =
     next(error)
   }
 }
+
+const retrieveSingleRental = async (req: Request, res: Response, next: NextFunction) => {
+  try {
+      const {id} = req.params
+      console.log(id)
+      const result = await bookingService.retrieveSingleRentalFromDB( id);
+      console.log(result)
+
+      if (!result) {
+          throw new Error("bike update failed");
+      }
+      res.status(200).json({
+          success: true,
+          statusCode: 200,
+          message: "Bike updated successfully",
+          data: result,
+        });
+  } catch (error) {
+      next(error)
+  }
+}
+
 export const bookingController = {
     CreateRental,
     ReturnBikeAndUpdate,
-    GetAllRentals
+    GetAllRentals,
+    retrieveSingleRental
 }

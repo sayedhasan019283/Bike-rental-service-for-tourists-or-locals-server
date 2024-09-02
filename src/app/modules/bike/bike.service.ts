@@ -37,6 +37,17 @@ const updateBikeIntoDB = async (data : Partial<IBike>, id : string) => {
     return error
   }
 }
+const retrieveSingleBikeFromDB = async ( id : string) => {
+  try {
+    const result = await BikeModel.findById(id)
+    if (!result) {
+      throw new Error('update failed');
+    }
+    return result
+  } catch (error) {
+    return error
+  }
+}
 
 const deleteBikeFromDB = async (id: string) => {
   const result = BikeModel.findByIdAndDelete(id);
@@ -49,5 +60,6 @@ export const bikeService = {
   createBikeIntoDB,
   retrieveAllBikesFromDB,
   updateBikeIntoDB,
-  deleteBikeFromDB
+  deleteBikeFromDB,
+  retrieveSingleBikeFromDB
 }

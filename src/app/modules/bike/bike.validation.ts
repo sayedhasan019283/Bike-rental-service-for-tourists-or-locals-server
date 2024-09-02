@@ -9,7 +9,8 @@ const createBikeSchema = z.object({
     cc: z.number(),
     year: z.number(),
     model: z.string(),
-    brand: z.string()
+    brand: z.string(),
+    photo: z.string(),
   })
 });
 const updateBikeSchema = z.object({
@@ -21,7 +22,8 @@ const updateBikeSchema = z.object({
     cc: z.number().optional(),
     year: z.number().optional(),
     model: z.string().optional(),
-    brand: z.string().optional()
+    brand: z.string().optional(),
+    photo: z.string().optional()
   })
 });
 
