@@ -3,6 +3,7 @@ import { bikeRoutes } from '../modules/bike/bike.route';
 import { bookingRoutes } from '../modules/booking/booking.route';
 import { userRoutes } from '../modules/user/user.route';
 import { openRoutes } from '../modules/open/open.route';
+import { paymentRoutes } from '../modules/payment/payment.route';
 
 const router = Router();
 
@@ -24,6 +25,11 @@ const moduleRoutes = [
     path: '/api',
     route: userRoutes,
   },
+  {
+    path: '/api',
+    route: paymentRoutes,
+  },
+  
   
 ];
 

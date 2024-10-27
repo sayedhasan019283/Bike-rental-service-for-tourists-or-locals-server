@@ -1,6 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable no-undef */
 import { BikeModel } from '../bike/bike.model';
+import { initiatePayment } from '../payment/payment.utils';
 import IBooking from './booking.interface';
 import { BookingModel } from './booking.model';
 
@@ -93,9 +94,53 @@ const retrieveSingleRentalFromDB = async (id: string) => {
   }
 };
 
+const getSingleBooking = async  (id: string) => {
+  try {
+    const result = await BookingModel.findById({ _id : id  });
+    if (!result) {
+      throw new Error('did not get rentals ');
+    }
+  return result;
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+
+const paymentSpecificBookingIntoDB  = async (payload : any) => {
+  console.log({payload})
+  const {totalCost, userInfo : user} = payload;
+  const transactionId = `TXN-${Date.now()}`;
+
+  
+
+  const paymentData = {
+      transactionId,
+      totalCost,
+      custormerName: user.name,
+      customerEmail: user.email,
+      customerPhone: user.phone,
+      customerAddress: user.address
+  }
+
+  console.log({paymentData})
+
+      //payment
+      const paymentSession = await initiatePayment(paymentData);
+
+      console.log({paymentSession})
+  
+      return paymentSession;
+  
+}
+
+
+
 export const bookingService = {
   CreateRentalIntoDB,
   ReturnBikeAndUpdateDB,
   GetAllRentalsFromDB,
   retrieveSingleRentalFromDB,
+  getSingleBooking,
+  paymentSpecificBookingIntoDB,
 };

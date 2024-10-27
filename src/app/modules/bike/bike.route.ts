@@ -11,30 +11,28 @@ router.post(
   '/bikes',
   auth(USER_ROLE.admin),
   validateRequest(bikeValidation.createBikeSchema),
-  bikeController.createBike
- );
- router.get(
-  '/bikes',
-  bikeController.retrieveAllBikes
- )
- router.put(
+  bikeController.createBike,
+);
+router.get('/products', bikeController.getFilteredProducts);
+router.get('/bikes', bikeController.retrieveAllBikes);
+router.put(
   '/bikes/:id',
   // auth(USER_ROLE.admin),
   validateRequest(bikeValidation.updateBikeSchema),
-  bikeController.updateBike
- )
- router.get(
+  bikeController.updateBike,
+);
+router.get(
   '/bike/:id',
   // auth(USER_ROLE.admin),
   validateRequest(bikeValidation.updateBikeSchema),
-  bikeController.retrieveSingleBike
- )
- router.delete(
+  bikeController.retrieveSingleBike,
+);
+router.delete(
   '/bikes/:id',
   // auth(USER_ROLE.admin),
   bikeController.deleteBike,
- )
+);
 
-
+router.get('/search', bikeController.searchItems);
 
 export const bikeRoutes = router;

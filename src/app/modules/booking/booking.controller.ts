@@ -1,5 +1,7 @@
 import { NextFunction, Request, Response } from "express";
 import { bookingService } from "./booking.service";
+import catchAsync from "../../utils/catchAsync";
+import sendResponse from "../../utils/sendResponse";
 
 const CreateRental = async (req: Request, res: Response, next : NextFunction) => {
 
@@ -83,9 +85,43 @@ const retrieveSingleRental = async (req: Request, res: Response, next: NextFunct
   }
 }
 
+
+const GetSingleRentals = async (req: Request, res: Response, next : NextFunction) => {
+  try {
+    const {id} = req.params
+    console.log('id from controller' ,id)
+    const result = await bookingService.getSingleBooking(id);
+    if (!result) {
+      throw new Error("did not get rentals ")
+    }
+    res.status(200).json({
+      success: true,
+      statusCode: 200,
+      message: "Single Rentals retrieved successfully",
+      data: result,
+    });
+  } catch (error) {
+    next(error)
+  }
+}
+
+const paymentSpecificBooking = catchAsync( async (req: Request, res: Response) => {
+     
+  const result = await bookingService.paymentSpecificBookingIntoDB(req.body);
+  console.log({result})
+  sendResponse(res, {
+      statusCode: 200,
+      success: true,
+      message: "Car Payment successfully",
+      data: result
+  })
+})
+
 export const bookingController = {
     CreateRental,
     ReturnBikeAndUpdate,
     GetAllRentals,
-    retrieveSingleRental
+    retrieveSingleRental,
+    GetSingleRentals,
+    paymentSpecificBooking
 }

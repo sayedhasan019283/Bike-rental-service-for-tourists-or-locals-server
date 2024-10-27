@@ -98,10 +98,32 @@ const createBike = async (req: Request, res: Response, next: NextFunction) => {
     }
  }
 
+ const getFilteredProducts = async (req: Request, res: Response, next: NextFunction) => {
+    const filters = req.query; // Filters like category, brand, price, etc.
+    try {
+      const products = await bikeService.filterProducts(filters);
+      res.status(200).json(products);
+    } catch (error) {
+      next(error)
+    }
+  };
+
+  export const searchItems = async (req: Request, res: Response) => {
+    try {
+      const { q } = req.query; // Get the search query from req.query
+      const items = await bikeService.findItems(q as string); // Pass the search query to the service
+      res.json(items);
+    } catch (error) {
+      res.status(500).json({ message: 'Search failed', error });
+    }
+  };
+
 export const bikeController = {
     createBike,
     retrieveAllBikes,
     updateBike, 
     deleteBike,
-    retrieveSingleBike
+    retrieveSingleBike,
+    getFilteredProducts,
+    searchItems
 }

@@ -1,17 +1,20 @@
-// src/controllers/payment.controller.ts
+import { Request, Response } from "express";
+import { paymentServices } from "./payment.service";
 
-import { NextFunction, Request, Response } from "express";
-import { createPaymentIntent } from "./payment.service";
-import { createPaymentSchema } from "./payment.validation";
+const confirmationController = async (req: Request, res: Response) => {
+    const { transactionId } = req.query;
+     console.log("req query=> ",req.query)
 
-
-export const createPayment = async (req:Request, res:Response, next: NextFunction) => {
-  try {
-    const validatedData = createPaymentSchema.parse(req.body);
-
-    const clientSecret = await createPaymentIntent(validatedData);
-    res.status(200).json({ clientSecret });
-  } catch (error) {
-    next(error)
-  }
+    try {
+        const result = await paymentServices.confirmationService(transactionId as string);
+        res.send(result)
+    } catch (error) {
+        console.log({error})
+    }
+    
 };
+
+
+export const paymentController = {
+    confirmationController,
+}

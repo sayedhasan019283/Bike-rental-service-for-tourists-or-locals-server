@@ -102,9 +102,44 @@ const loginUser = catchAsync(async (req, res) => {
     }
   }
 
+  const getAllUsers = async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      const result = await userService.getAllUsersFromDB();
+
+      if (!result) {
+        throw new Error("something went wrong")
+      }
+      res.status(200).json({
+        statusCode: 200,
+        success: true,
+        message: "All Users retrieved successfully",
+        data: result
+      });
+    } catch (error) {
+      next(error)
+    }
+  }
+
+  const promoteAnUser = async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      const { id } = req.params;
+      console.log(id)
+
+    const result = await userService.promoteUser(id);
+    if (!result) {
+      throw new Error("something went wrong")
+    }
+    } catch (error) {
+      console.log(error)
+    }
+
+  }
+
 export const userController = {
     createUser,
     loginUser, 
     getUserProfile,
-    updateProfile
+    updateProfile,
+    getAllUsers,
+    promoteAnUser
 };

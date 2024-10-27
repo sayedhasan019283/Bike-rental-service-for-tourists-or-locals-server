@@ -1,17 +1,39 @@
-// src/services/payment.service.ts
-import Stripe from 'stripe';
-import { Payment } from './payment.interface';
+import { join } from "path";
+import { verifyPayment } from "./payment.utils";
+import { readFileSync } from "fs";
 
-const stripe = new Stripe(
-  'sk_test_51L3e4UHgA3BXfMiI0W9hc8m2Ktg5mcizBde6giWRkuy0Kq49etFEyepQtaAzUyZyjgVbKIhyZBBzl0Bv2nu9WKIf00MCh9JSr2',
-  { apiVersion: '2024-06-20' },
-);
 
-export const createPaymentIntent = async (paymentData: Payment) => {
-  const paymentIntent = await stripe.paymentIntents.create({
-    amount: paymentData.amount,
-    currency: 'usd',
-  });
+const confirmationService = async (transactionId: string) => {
+    console.log({transactionId})
+    const verifyResponse = await verifyPayment(transactionId);
+    console.log({verifyResponse});
 
-  return paymentIntent.client_secret;
-};
+    // let result;
+    let message = "";
+
+    if (verifyResponse && verifyResponse.pay_status === 'Successful') {
+        // result = await BookingModel.findOneAndUpdate({ transactionId }, {
+        //     paymentStatus: 'Paid',
+        //     isBooked: "Ended"
+        // },{new: true});
+        // console.log({result})
+        message = "Successfully Paid!"
+    }
+    else {
+        message = "Payment Failed!"
+    }
+
+    // eslint-disable-next-line no-undef
+    const filePath = join(__dirname, '../../../views/confirmation.html');
+    let template = readFileSync(filePath, 'utf-8')
+
+    template = template.replace('{{message}}', message)
+
+    return template;
+}
+
+
+
+export const paymentServices = {
+    confirmationService,
+}

@@ -23,12 +23,23 @@ router.get(
     auth(USER_ROLE.user, USER_ROLE.admin),
     userController.getUserProfile,
   );
+router.get( 
+    '/users',
+    auth( USER_ROLE.admin),
+    userController.getAllUsers,
+  );
 router.put( 
     '/users/me',
     validateRequest(userValidation.UpdateUserValidationSchema),
     auth(USER_ROLE.user, USER_ROLE.admin),
     userController.updateProfile,
   );
+
+router.patch(
+  '/users/:id/promote',
+  // auth( USER_ROLE.admin),
+  userController.promoteAnUser,
+)
 
 
 export const userRoutes = router;

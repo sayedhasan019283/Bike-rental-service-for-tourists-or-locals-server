@@ -16,7 +16,7 @@ router.post('/rentals',
 
 router.put(
   '/rentals/:id/return',
-  auth(USER_ROLE.admin),
+  auth(USER_ROLE.admin, USER_ROLE.user),
   bookingController.ReturnBikeAndUpdate
 )
 router.get(
@@ -27,6 +27,14 @@ router.get(
 router.get(
   '/rentals/:id',
   bookingController.retrieveSingleRental
+)
+router.get(
+  '/single/rentals/:id',
+  bookingController.GetSingleRentals
+)
+
+router.post("/pay", 
+  bookingController.paymentSpecificBooking
 )
 
 

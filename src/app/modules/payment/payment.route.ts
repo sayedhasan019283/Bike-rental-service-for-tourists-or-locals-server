@@ -1,16 +1,9 @@
-import express from 'express';
-import validateRequest from '../../middlewares/validateRequest';
-import { createPaymentSchema } from './payment.validation';
-import { createPayment } from './payment.controller';
+import { Router } from 'express';
+import { paymentController } from './payment.controller';
 
-const router = express.Router();
+const router = Router();
 
-router.post(
-  '/create-payment-intent', createPayment,
-  validateRequest(createPaymentSchema),
- );
+router.post('/confirmation', paymentController.confirmationController)
 
 
-
-
-export const bikeRoutes = router;
+export const paymentRoutes = router;
