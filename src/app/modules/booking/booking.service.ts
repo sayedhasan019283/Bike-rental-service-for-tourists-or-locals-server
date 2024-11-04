@@ -74,13 +74,30 @@ const ReturnBikeAndUpdateDB = async (id: string) => {
 };
 
 const GetAllRentalsFromDB = async (id: string) => {
-  const result = await BookingModel.find({ userId: id, isReturned: false });
+  try {
+    const result = await BookingModel.find({ userId: id, isReturned: false });
   console.log(result);
   if (!result) {
     throw new Error("didn't find any rental");
   }
   return result;
+  } catch (error) {
+    return error;
+  }
 };
+
+const getAllRental = async () => {
+  try {
+    const result = await BookingModel.find({});
+    console.log(result)
+    if (!result) {
+      throw new Error('no rental exist')
+    }
+  return result;
+  } catch (error) {
+    return error
+  }
+}
 
 const retrieveSingleRentalFromDB = async (id: string) => {
   try {
@@ -143,4 +160,5 @@ export const bookingService = {
   retrieveSingleRentalFromDB,
   getSingleBooking,
   paymentSpecificBookingIntoDB,
+  getAllRental
 };

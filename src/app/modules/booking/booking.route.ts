@@ -25,6 +25,11 @@ router.get(
   bookingController.GetAllRentals
 )
 router.get(
+  '/rental',
+  auth(USER_ROLE.admin),
+  bookingController.getAllRental
+)
+router.get(
   '/rentals/:id',
   bookingController.retrieveSingleRental
 )

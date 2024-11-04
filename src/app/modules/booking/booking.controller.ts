@@ -117,11 +117,30 @@ const paymentSpecificBooking = catchAsync( async (req: Request, res: Response) =
   })
 })
 
+const getAllRental = async (req: Request, res: Response, next : NextFunction) => {
+  try {
+    const result = await bookingService.getAllRental();
+    console.log("all rental", result)
+    if (!result) {
+      throw new Error("No data Found")
+    }
+    res.status(200).json({
+      success: true,
+      statusCode: 200,
+      message: "All Rentals retrieved successfully",
+      data: result,
+    });
+  } catch (error) {
+    next(error);
+  }
+}
+
 export const bookingController = {
     CreateRental,
     ReturnBikeAndUpdate,
     GetAllRentals,
     retrieveSingleRental,
     GetSingleRentals,
-    paymentSpecificBooking
+    paymentSpecificBooking,
+    getAllRental
 }
