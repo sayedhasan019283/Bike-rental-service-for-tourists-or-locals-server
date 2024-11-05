@@ -15,17 +15,29 @@ const createBikeIntoDB = async (payload : IBike) => {
   }
 }
 
-const retrieveAllBikesFromDB = async () => {
+const retrieveAllBikesFromDB = async ( ) => {
   try {
-    const result = await BikeModel.find({});
-    if (!result) {
+    // Calculate the number of documents to skip based on the current page
+    const page = 1;
+    const limit = 12;
+    const skip = (page - 1) * limit;
+
+    // Fetch the data with pagination
+    const result = await BikeModel.find({})
+      .limit(limit)
+      .skip(skip);
+
+    // Check if the result is empty
+    if (!result || result.length === 0) {
       throw new Error('No Data Found');
     }
-    return result
+
+    return result;
   } catch (error) {
-    return error
+    return { error: error };
   }
-}
+};
+
 
 const updateBikeIntoDB = async (data : Partial<IBike>, id : string) => {
   try {
